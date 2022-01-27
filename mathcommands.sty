@@ -1,0 +1,86 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mathcommands}[2020/03/27 Mathematics commands]
+
+% Packages
+\RequirePackage{mathtools}
+\RequirePackage{bm}
+
+% Alternative overline (daleif p. 64 + email correspondence)
+\DeclareRobustCommand\altoverline[2][0.8]{%
+\mathmakebox[\widthof{\ensuremath{#2}}][c]{\overline{\mathmakebox[\widthof{\ensuremath{#2}}*\real{#1}][c]{#2}}}}
+
+% Constants
+\newcommand{\dotlessi}{\i}
+\newcommand{\iu}{\operatorname{i}}
+\DeclareMathOperator{\e}{\mathrm{e}}
+
+% Greek letters
+\renewcommand{\epsilon}{\varepsilon}
+
+% Definitions
+\newcommand{\defn}{\coloneqq}
+\newcommand{\nfed}{\eqqcolon}
+
+% Sets
+\DeclarePairedDelimiterX{\set}[2]{\lbrace}{\rbrace}{#1\;\delimsize\vert\;#2} % Daleif uses \, on page 66
+\newcommand*\cartesian\times
+\newcommand*\bigcartesian\prod
+\newcommand*\union\cup
+\newcommand*\intersect\cap
+% New bigcup, bigcap, but use mathchoice to make sure it works between math styles (inline, display, etc.)
+% \bigunion has to use \DeclareMathOperator and not \newcommand! Otherwise the limits don't work properly.
+\DeclareMathOperator*{\smallbigcup}{\textstyle\bigcup}
+\DeclareMathOperator*{\bigunion}{\mathchoice
+	{\smallbigcup}%
+	{\bigcup}%
+	{\bigcup}%
+	{\bigcup}%
+}
+\DeclareMathOperator*{\smallbigcap}{\textstyle\bigcap}
+\DeclareMathOperator*{\bigintersect}{\mathchoice
+	{\smallbigcap}%
+	{\bigcup}%
+	{\bigcup}%
+	{\bigcup}%
+}
+
+% Functions
+\DeclareMathOperator{\id}{id}
+\newcommand*{\indicator}[1]{\mathbf{1}_{#1}}
+
+% Number sets
+\newcommand{\setN}{\mathbb{N}}
+\newcommand{\setZ}{\mathbb{Z}}
+\newcommand{\setQ}{\mathbb{Q}}
+\newcommand{\setR}{\mathbb{R}}
+\newcommand{\setC}{\mathbb{C}}
+
+% Calligraphic letters
+\newcommand{\calL}{\mathcal{L}}
+
+% Algebra
+\newcommand\inverse{^{-1}}
+
+% Vectors
+\renewcommand{\vec}[1]{\bm{#1}}
+\newcommand*\dotp\cdot
+\newcommand*\crossp\times
+
+% Norms and inner products
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiterX{\inner}[2]{\langle}{\rangle}{#1,#2}
+
+% Complex numbers
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\conj}[1]{\altoverline{#1}}
+
+% Topology
+\newcommand*{\closure}[1]{\altoverline{#1}}
+
+% Calculus
+\newcommand*\dif{\mathop{}\!\mathrm{d}}
+
+
+\endinput

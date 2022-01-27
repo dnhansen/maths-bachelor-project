@@ -1,0 +1,117 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{frontpage}[2020/03/27 Custom title page]
+
+%====================================================================
+%  SETUP
+%====================================================================
+
+% Required packages
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[danish, UKenglish]{babel}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{graphicx}
+\RequirePackage{adforn} % fleuron. NOTE: Gives warnings, don't know why. style.sty doesn't give warnings??
+
+% Choose language - default is UKenglish
+\newcommand*{\@language}{UKenglish}
+\DeclareOption{UKenglish}{\renewcommand*{\@language}{UKenglish}}
+\DeclareOption{danish}{\renewcommand*{\@language}{danish}}
+\ProcessOptions\relax
+
+% Supervisor: write either `supervisor' of `vejleder' depending on language
+\newcommand*{\@supervisorheader}{}
+\addto\captionsUKenglish{%
+	\renewcommand*{\@supervisorheader}{Supervisor}%
+}
+\addto\captionsdanish{%
+	\renewcommand*{\@supervisorheader}{Vejleder}%
+}
+
+% Default values for title, author, etc.
+\providecommand{\@title}{TITLE}
+\providecommand{\@alttitle}{ALTTITLE}
+\providecommand{\@project}{PROJECT}
+\providecommand{\@author}{AUTHOR}
+\providecommand{\@authorid}{AUTHORID}
+\providecommand{\@supervisor}{SUPERVISOR}
+\providecommand{\@department}{DEPARTMENT}
+\providecommand{\@institution}{INSTITUTION}
+
+% If date is not provided, use today
+\DTMifsaveddate{@date}{}{\DTMsavenow{@date}}
+
+
+% Environment for expanding language in otherlanguage
+% https://tex.stackexchange.com/questions/15011/expansion-of-command-for-language-in-otherlanguage-environment
+\newenvironment{@Otherlanguage}[1]{%
+  \expandafter\otherlanguage\expandafter{#1}%
+}{\endotherlanguage}
+
+
+%====================================================================
+%  FRONT PAGE
+%====================================================================
+
+\renewcommand{\maketitle}{%
+\begin{@Otherlanguage}{\@language}
+\begin{titlingpage*}
+	% Front page
+	\calccentering{\unitlength}
+	\begin{adjustwidth*}{\unitlength}{-\unitlength}
+		\begin{adjustwidth}{-0.5cm}{-0.5cm}
+		\centering
+		\thispagestyle{empty}
+		{%
+			\large%
+			{\Huge \@title}\par
+			\vspace*{0.5\onelineskip}%
+			\adfflatleafoutlineleft\par
+			\vspace*{0.5\onelineskip}%
+			{\itshape \@alttitle}\par
+			\vspace*{4\onelineskip}\par
+			\includegraphics[width=8cm]{ausegl_sort.png}\par
+			\vspace*{4\onelineskip}%
+			\@project\par
+			\@author~~{\footnotesize\textbullet}~~\@authorid\par
+		}%
+		\vfill
+		\vspace*{2\onelineskip}
+		\@supervisorheader: \@supervisor\hfill
+		\DTMusedate{@date}\par
+		\vspace*{2\onelineskip}%
+		\small%
+		\@department\par
+		\@institution\par~\par
+		\emph{Må gerne offentliggøres}%
+		\enlargethispage{2\onelineskip}
+		\end{adjustwidth}
+	\end{adjustwidth*}
+	\newpage
+	%
+	% Colophon
+	\setlrmarginsandblock{24.8mm}{24.8mm}{*}
+	\checkandfixthelayout
+	\makeatletter
+	\ch@ngetext
+	\makeatother
+	\thispagestyle{empty}
+	\small%
+	\strut\vfill
+	\begin{flushleft}
+		\copyright\ \@author\ \DTMfetchyear{@date} \par
+		Layout og typografi af forfatteren \par
+		Skrifttype: 10\,pt Kp-fonts | \texttt{Inconsolata} \par
+		Sat med \textsc{pdf}\LaTeX{} og \emph{memoir}-klassen \par
+	\end{flushleft}
+\end{titlingpage*}
+\end{@Otherlanguage}
+}
+
+\cleardoublepage
+%\setlrmarginsandblock{24.8mm}{80.2mm}{*}
+%\checkandfixthelayout
+%\makeatletter
+%\ch@ngetext
+%\makeatother
+
+\endinput
